@@ -13,10 +13,7 @@ SCOPES = [
 DOCUMENT_ID = "1hTAN_ZJ05vzw8BWTdhQYK11qGHdWRmFB8xEf-pK3iTM"
 
 
-def main():
-    """Shows basic usage of the Docs API.
-    Prints the title of a sample document.
-    """
+def get_service():
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -36,7 +33,14 @@ def main():
             pickle.dump(creds, token)
 
     service = build("docs", "v1", credentials=creds)
+    return service
 
+
+def main():
+    """Shows basic usage of the Docs API.
+    Prints the title of a sample document.
+    """
+    service = get_service()
     # Retrieve the documents contents from the Docs service.
     document = service.documents().get(documentId=DOCUMENT_ID).execute()
 
