@@ -1,5 +1,6 @@
 import pickle
-import os.path
+import os
+import json
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -11,6 +12,8 @@ SCOPES = [
 ]
 
 DOCUMENT_ID = "1hTAN_ZJ05vzw8BWTdhQYK11qGHdWRmFB8xEf-pK3iTM"
+
+CLIENT_SECRET = json.loads(os.environ["CLIENT_SECRET"])
 
 
 def get_service():
@@ -26,7 +29,7 @@ def get_service():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+            flow = InstalledAppFlow.from_client_config(CLIENT_SECRET, scopes=SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open("token.pickle", "wb") as token:
